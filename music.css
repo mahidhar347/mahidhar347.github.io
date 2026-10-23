@@ -10,5 +10,5 @@
 .music-inline-toggle{display:block;width:100%;font:600 11px var(--sans);padding:12px 14px;min-height:44px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;margin-top:16px}
 /* Keep expanded audio controls out of the page until requested. */
 .theme-dock{bottom:18px;max-height:calc(100svh - 120px);overflow:auto}
-@media(min-width:701px){#music-controls .music-volume-row,#music-controls .music-credit{display:none}#music-controls:focus-within .music-volume-row,#music-controls:focus-within .music-credit,#music-controls:hover .music-volume-row,#music-controls:hover .music-credit{display:grid}.theme-dock{max-width:310px}}
-@media(max-width:700px){.theme-dock{bottom:calc(max(16px,env(safe-area-inset-bottom)) + 56px);max-height:calc(100svh - 105px)}#music-status,.music-credit{font-size:10px;max-width:none}.music-volume-row label{font-size:10px}}
+@media(min-width:901px){.theme-dock{max-width:310px}}
+@media(max-width:900px){.theme-dock{bottom:calc(max(16px,env(safe-area-inset-bottom)) + 56px);max-height:calc(100svh - 105px)}#music-status,.music-credit{font-size:10px;max-width:none}.music-volume-row label{font-size:10px}}

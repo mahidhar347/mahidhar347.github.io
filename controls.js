@@ -1,7 +1,7 @@
 (() => {
   const button = document.querySelector('#appearance-toggle');
   const panel = document.querySelector('#appearance-panel');
-  const mobile = window.matchMedia('(max-width: 700px)');
+  const mobile = window.matchMedia('(max-width: 900px)');
   const close = (restoreFocus = false) => {
     panel.classList.remove('is-open');
     button.setAttribute('aria-expanded', 'false');
