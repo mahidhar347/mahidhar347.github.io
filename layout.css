@@ -1,0 +1,10 @@
+/* Keep the full hero content in flow at every screen height. */
+.hero{height:auto;min-height:max(920px,100svh);max-height:none}
+.hero-content{max-width:1150px;padding-top:170px;padding-bottom:160px}
+h1{font-size:clamp(68px,7vw,108px);letter-spacing:-4px}
+.hero-facts{margin-top:32px}
+.scroll-cue{bottom:85px}
+@media(min-width:1600px){.hero-content{padding-top:190px}}
+@media(max-width:1050px) and (min-width:701px){h1{font-size:85px}.hero-content{padding-top:175px}}
+@media(max-width:700px){.hero{min-height:900px}.hero-content{padding:185px 7% 175px}h1{font-size:clamp(64px,13vw,90px);letter-spacing:-3px}.hero-facts{margin-top:40px}}
+@media(max-width:380px){.hero-content{padding-top:170px}}
