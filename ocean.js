@@ -59,17 +59,26 @@
     const rope=new T.MeshStandardMaterial({color:0xaaa184,roughness:1});
     for(const x of [-.8,.8]){beam([x,.4,1.8],[0,4.9,0],.012,rope);beam([x,.4,-1.8],[0,4.9,0],.012,rope);beam([x,.5,-1.8],[x,.5,1.8],.025,trim);}
     // Distant cliff, with a continuous vertical stream and spray at its foot.
-    const cliff = new T.MeshStandardMaterial({color:0x374b40,roughness:1,flatShading:true});
+    const cliff = new T.MeshStandardMaterial({color:0x718077,roughness:1,vertexColors:true});
     for(let i=0;i<9;i++){
-      const height=4+Math.sin(i*1.8)*1.8;
-      const rock=new T.Mesh(new T.CylinderGeometry(2.5,4,height,9,3),cliff);
+      const height=i===2?6.7:4+Math.sin(i*1.8)*1.8;
+      const geo=new T.CylinderGeometry(2.5,4,height,40,18),p=geo.attributes.position,colors=[];
+      for(let j=0;j<p.count;j++){
+        const x=p.getX(j),y=p.getY(j),z=p.getZ(j);
+        const grain=Math.sin(x*7+i)*Math.sin(z*5+y*3)*.16+Math.sin(y*13+x*2)*.065;
+        const bulge=1+.12*Math.sin(Math.atan2(z,x)*7+i)+grain;
+        p.setXYZ(j,x*bulge,y+grain*.5,z*bulge);
+        const moss=y>height*.37;const c=new T.Color(moss?'#3b5740':'#69736c');c.multiplyScalar(.75+grain+.2*Math.sin(y*18));colors.push(c.r,c.g,c.b);
+      }
+      geo.setAttribute('color',new T.Float32BufferAttribute(colors,3));geo.computeVertexNormals();
+      const rock=new T.Mesh(geo,cliff);
       rock.position.set(11+i*3,height/2-1,-40-Math.sin(i)*2);scene.add(rock);
     }
     const fallU={time:uniforms.time,tint:{value:new T.Color('#cbe8e6')}};
-    const fall=new T.Mesh(new T.PlaneGeometry(.95,5.2,10,30),new T.ShaderMaterial({transparent:true,depthWrite:false,side:T.DoubleSide,uniforms:fallU,
+    const fall=new T.Mesh(new T.PlaneGeometry(.95,5.7,10,30),new T.ShaderMaterial({transparent:true,depthWrite:false,side:T.DoubleSide,uniforms:fallU,
       vertexShader:'varying vec2 uvv;uniform float time;void main(){uvv=uv;vec3 p=position;p.x+=sin(uv.y*20.-time*5.)*.035;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}',
       fragmentShader:'varying vec2 uvv;uniform float time;uniform vec3 tint;void main(){float edge=smoothstep(0.,.17,uvv.x)*smoothstep(1.,.83,uvv.x);float strands=.5+.5*sin(uvv.x*85.+sin(uvv.y*18.+time*9.));float drops=.6+.4*sin(uvv.y*85.+time*25.+uvv.x*13.);gl_FragColor=vec4(tint*(.7+.3*strands),edge*(.45+.35*strands+.2*drops));}'
-    }));fall.position.set(18,2.1,-35.8);scene.add(fall);
+    }));fall.position.set(17.7,2.7,-34.4);scene.add(fall);
     const count=150, sprayGeo=new T.BufferGeometry(), sprayPos=new Float32Array(count*3);
     sprayGeo.setAttribute('position',new T.BufferAttribute(sprayPos,3));
     const spray=new T.Points(sprayGeo,new T.PointsMaterial({color:0xd7eeed,size:.11,transparent:true,opacity:.38,depthWrite:false}));scene.add(spray);
@@ -90,14 +99,16 @@
       if(!paused&&last)time+=Math.min((now-last)/1000,.05);last=now;
       if(!paused||dirty){
         uniforms.time.value=time;
-        boat.position.set(camera.aspect<.8?3.7:7.4,height(camera.aspect<.8?3.7:7.4,1,time)+.15,1);boat.rotation.y=-.45;
+        const route=window.VoyageClock.voyagePosition(Date.now(),camera.aspect<.8);
+        boat.position.set(route.x,height(route.x,route.z,time)+.15,route.z);boat.rotation.y=route.heading;
         const x=boat.position.x,z=boat.position.z;
-        boat.rotation.z=Math.atan2(height(x+.8,z,time)-height(x-.8,z,time),1.6)*.7;
-        boat.rotation.x=-Math.atan2(height(x,z+1.8,time)-height(x,z-1.8,time),3.6)*.8;
+        const sx=Math.cos(route.heading),sz=-Math.sin(route.heading),fx=Math.sin(route.heading),fz=Math.cos(route.heading);
+        boat.rotation.z=Math.atan2(height(x+sx*.8,z+sz*.8,time)-height(x-sx*.8,z-sz*.8,time),1.6)*.7;
+        boat.rotation.x=-Math.atan2(height(x+fx*1.8,z+fz*1.8,time)-height(x-fx*1.8,z-fz*1.8,time),3.6)*.8;
         const a=sailGeo.attributes.position;
         for(let i=0;i<a.count;i++)a.setZ(i,.28*Math.sin((a.getX(i)/3+.5)*Math.PI)*Math.sin((a.getY(i)/3+.5)*Math.PI)+Math.sin(time*1.8+a.getX(i)*3)*.035);
         a.needsUpdate=true;sailGeo.computeVertexNormals();
-        for(let i=0;i<count;i++){const life=(time*.36+i*.618)%1,angle=i*2.4;sprayPos[i*3]=18+Math.cos(angle)*life*1.6;sprayPos[i*3+1]=.05+Math.sin(life*Math.PI)*.55;sprayPos[i*3+2]=-35.4+Math.sin(angle)*life*.8;}
+        for(let i=0;i<count;i++){const life=(time*.36+i*.618)%1,angle=i*2.4;sprayPos[i*3]=17.7+Math.cos(angle)*life*1.6;sprayPos[i*3+1]=.05+Math.sin(life*Math.PI)*.55;sprayPos[i*3+2]=-34.1+Math.sin(angle)*life*.8;}
         sprayGeo.attributes.position.needsUpdate=true;renderer.render(scene,camera);dirty=false;
         if(!root.classList.contains('ocean-live'))root.classList.add('ocean-live');canvas.dataset.sceneTime=time.toFixed(2);
       }
