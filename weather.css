@@ -27,10 +27,6 @@
 [data-weather="cloud"] .weather-mist{opacity:.22}
 [data-weather="wind"] .weather-mist,[data-weather="storm"] .weather-mist{opacity:.35}
 [data-weather="wind"] .weather-mist:before,[data-weather="storm"] .weather-mist:before{animation-duration:7s}
-[data-weather="rain"] .hero-art,[data-weather="storm"] .hero-art{filter:var(--mood-filter) grayscale(.4) saturate(.6) brightness(.85)}
-[data-weather="cloud"] .hero-art{filter:var(--mood-filter) grayscale(.3) saturate(.65) brightness(.85)}
-[data-weather="fog"] .hero-art{filter:var(--mood-filter) grayscale(.4) saturate(.5) brightness(.9)}
-[data-weather="snow"] .hero-art{filter:var(--mood-filter) grayscale(.5) saturate(.7) brightness(1.05)}
 [data-weather="wind"] .hero-art{animation-duration:8s}
 [data-weather="rain"] .spray,[data-weather="storm"] .spray,[data-weather="snow"] .spray,[data-weather="fog"] .spray{display:none}
 .motion-off .weather-particles,.motion-off .weather-mist{display:none}

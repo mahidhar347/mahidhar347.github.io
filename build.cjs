@@ -9,6 +9,10 @@ function build(output = path.join(__dirname, '_site')) {
   for (const file of files) fs.copyFileSync(path.join(__dirname,file),path.join(output,file));
   fs.mkdirSync(path.join(output,'assets'),{recursive:true});
   fs.copyFileSync(path.join(__dirname,'assets/grand-line-seascape.jpg'),path.join(output,'assets/grand-line-seascape.jpg'));
+  for(const mood of ['dawn','day','sunset','midnight']){
+    const image=`assets/seascape-real-${mood}-v1.jpg`;
+    fs.copyFileSync(path.join(__dirname,image),path.join(output,image));
+  }
   fs.copyFileSync(path.join(__dirname,'assets/voyage-theme.m4a'),path.join(output,'assets/voyage-theme.m4a'));
   fs.copyFileSync(path.join(__dirname,'assets/MUSIC-LICENSE.md'),path.join(output,'assets/MUSIC-LICENSE.md'));
   const html = fs.readFileSync(path.join(__dirname,'index.html'),'utf8').replace(/(href|src)="([^"?]+\.(?:css|js|svg|m4a))(?:\?[^\"]*)?"/g,(match,attribute,file)=>{

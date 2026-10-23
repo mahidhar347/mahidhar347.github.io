@@ -36,7 +36,7 @@ Data documentation and attribution: https://open-meteo.com/en/docs
 
 The site is deployed at https://mahidhar347.github.io/ through GitHub Actions. Run regression checks with `node --test tests/*.test.cjs` from this folder. Tests cover weather mapping, forecast failures and stale data, hourly scheduling, pinned themes, asynchronous sound toggles, and background audio suspension. Public-site browser checks include desktop and mobile layouts, modal navigation, weather retrieval, theme selection and audio controls. Audio quality still needs human listening on the target device.
 
-Mobile Ocean Controls expands on demand, keeping content clear. All fixed phone controls have 44px targets; the weather panel closes back to its launcher. Weather filters preserve night lighting. New forecasts show a loading status before falling back on failure. Page-sharing metadata and an original compass favicon are included.
+Mobile Ocean Controls expands on demand, keeping content clear. All fixed phone controls have 44px targets; the weather panel closes back to its launcher. The background uses four separately relit, photorealistic generated artworks, not colour filters. New forecasts show a loading status before falling back on failure. Page-sharing metadata and an original compass favicon are included.
 
 Deployments run `node build.cjs` to create `_site/`. Every local stylesheet, script, and favicon gets a content hash in its URL so updated pages cannot accidentally use older cached code. The original source still opens directly for local previews. No dependencies need to be installed. Build artifacts, source tests, and original full-resolution artwork are excluded from the public deployment.
 
@@ -45,3 +45,4 @@ Official instructions: https://docs.github.com/en/pages/getting-started-with-git
 ## Audio-only background music
 
 Ocean controls → Play background music starts The Buccaneer's Haul by Shane Ivers, sourced from Silverman Sound Studios under CC BY 4.0. This is pirate-adventure background music, not an official One Piece recording. Attribution and provenance are in `assets/MUSIC-LICENSE.md` and displayed by the music controls. The soundtrack is served with the site in AAC/M4A format, loops, and has pause and volume controls. There is no video or third-party player. Only volume is remembered; playback starts after the visitor clicks Play. It pauses when the tab is hidden, on navigation, or when weather ambience is enabled. Playing music mutes weather ambience.
+

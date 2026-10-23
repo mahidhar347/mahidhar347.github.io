@@ -1,14 +1,17 @@
-:root{--mood-filter:sepia(.12) saturate(.95) brightness(1.02);--mood-overlay:#f9c26b18;--light-ink:#4c7569;--panel:#e9e8db;--theme-tint:#19383e}
-:root[data-theme="dawn"]{--navy:#19383e;--deep:#10292f;--cream:#faf0dc;--gold:#f1bc73;--teal:#acd4bd;--ink:#2e3a32;--panel:#eee5ce;--light-ink:#58785e;--line:#d9cdb2;--mood-filter:sepia(.18) saturate(.9) brightness(1.12);--mood-overlay:#ffbe7030;--theme-tint:#19383e}
-:root[data-theme="day"]{--navy:#073b50;--deep:#062e40;--cream:#eff8ee;--gold:#ffd778;--teal:#a5e3dc;--ink:#173f44;--panel:#deede4;--light-ink:#187079;--line:#c0d8d1;--mood-filter:hue-rotate(10deg) saturate(1.25) brightness(1.2);--mood-overlay:#21d7e52a;--theme-tint:#073b50}
-:root[data-theme="sunset"]{--navy:#302039;--deep:#21172c;--cream:#fff0e2;--gold:#ffb27b;--teal:#d6b5c9;--ink:#493747;--panel:#f0ddd6;--light-ink:#9b5d65;--line:#dfc4c6;--mood-filter:sepia(.3) hue-rotate(320deg) saturate(1.65) brightness(.8);--mood-overlay:#e851773a;--theme-tint:#302039}
-:root[data-theme="midnight"]{--navy:#080f29;--deep:#050a1c;--cream:#e9eff8;--gold:#9ee8ed;--teal:#a8bce9;--ink:#283751;--panel:#dbe3f0;--light-ink:#486a91;--line:#bdcbdf;--mood-filter:grayscale(.32) sepia(.25) hue-rotate(160deg) saturate(1.7) brightness(.44);--mood-overlay:#17318848;--theme-tint:#080f29}
+:root{--light-ink:#4c7569;--panel:#e9e8db;--theme-tint:#19383e}
+:root[data-theme="dawn"]{--navy:#19383e;--deep:#10292f;--cream:#faf0dc;--gold:#f1bc73;--teal:#acd4bd;--ink:#2e3a32;--panel:#eee5ce;--light-ink:#58785e;--line:#d9cdb2;--theme-tint:#19383e}
+:root[data-theme="day"]{--navy:#073b50;--deep:#062e40;--cream:#eff8ee;--gold:#ffd778;--teal:#a5e3dc;--ink:#173f44;--panel:#deede4;--light-ink:#187079;--line:#c0d8d1;--theme-tint:#073b50}
+:root[data-theme="sunset"]{--navy:#302039;--deep:#21172c;--cream:#fff0e2;--gold:#ffb27b;--teal:#d6b5c9;--ink:#493747;--panel:#f0ddd6;--light-ink:#9b5d65;--line:#dfc4c6;--theme-tint:#302039}
+:root[data-theme="midnight"]{--navy:#080f29;--deep:#050a1c;--cream:#e9eff8;--gold:#9ee8ed;--teal:#a8bce9;--ink:#283751;--panel:#dbe3f0;--light-ink:#486a91;--line:#bdcbdf;--theme-tint:#080f29}
 body,.hero,.voyage,.contact,footer,.skill-group,.profile-copy p,.button,.ticker,dialog,.log-pose,.motion-toggle{transition:background-color 1.8s ease,color 1.8s ease,border-color 1.8s ease}
-.hero-art{filter:var(--mood-filter);transition:filter 2.5s ease}
-.hero-art:before{content:'';position:absolute;inset:0;background:var(--mood-overlay);mix-blend-mode:soft-light;transition:background-color 2.5s}
-.hero-art:after{content:'';position:absolute;inset:0;opacity:0;background-image:radial-gradient(circle at 12% 12%,#fff 0 1px,transparent 2px),radial-gradient(circle at 47% 21%,#fff 0 1px,transparent 2px),radial-gradient(circle at 76% 9%,#fff 0 1px,transparent 2px),radial-gradient(circle at 30% 32%,#ccedff 0 1px,transparent 2px),radial-gradient(circle at 90% 24%,#fff 0 1px,transparent 2px);background-size:270px 270px;mask-image:linear-gradient(#000,transparent 60%);transition:opacity 2.5s}
-[data-theme="midnight"] .hero-art:after{opacity:1}
-.hero-shade{background:linear-gradient(90deg,color-mix(in srgb,var(--theme-tint) 94%,transparent),color-mix(in srgb,var(--theme-tint) 56%,transparent) 37%,transparent 80%),linear-gradient(0deg,var(--deep),transparent 30%,transparent 75%,#06192370)}
+/* Each mood has its own naturally relit artwork, never a CSS colour filter. */
+.hero-art{background-image:url('assets/seascape-real-sunset-v1.jpg');filter:none}
+[data-theme="dawn"] .hero-art{background-image:url('assets/seascape-real-dawn-v1.jpg')}
+[data-theme="day"] .hero-art{background-image:url('assets/seascape-real-day-v1.jpg')}
+[data-theme="midnight"] .hero-art{background-image:url('assets/seascape-real-midnight-v1.jpg')}
+.hero-art:before,.hero-art:after{content:none}
+/* Neutral shade protects text contrast without painting a coloured wash over the scene. */
+.hero-shade{background:linear-gradient(90deg,#020c15e8,#020c1590 37%,transparent 80%),linear-gradient(0deg,#020c15,transparent 30%,transparent 80%,#020c1540)}
 .profile h2 em,.arsenal h2 em,dialog h2 em{color:var(--light-ink)}
 .skill-group{background:var(--panel)}
 .contact{background:var(--navy)}

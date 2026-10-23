@@ -1,5 +1,16 @@
 # Original artwork
 
+## Current realistic backgrounds
+
+The active hero now uses four separately generated, photorealistic reinterpretations
+of the original composition: `assets/seascape-real-{dawn,day,sunset,midnight}-v1.jpg`.
+They are AI-generated artwork, not photographs of a real destination. Each scene
+has its own lighting, sky, shadows and water reflections. No CSS hue, saturation,
+sepia, grayscale or colour-overlay treatment is applied. A neutral dark gradient
+behind the text remains for legibility. The original image is preserved below.
+Built-in image generation was used; JPEGs are optimized exports of the saved PNG
+masters in this project's assets folder. Full prompts: `assets/REALISTIC-ARTWORK.md`.
+
 `assets/grand-line-seascape.png` was created with the built-in image generation tool for this portfolio. It is an original fan-inspired environment, not an official One Piece asset. The poster monogram, compass motifs, route map, and motion effects are built in HTML, SVG, and CSS.
 
 ## Final generation prompt

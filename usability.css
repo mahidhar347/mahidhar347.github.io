@@ -25,7 +25,7 @@ dialog{overscroll-behavior:contain;scroll-padding:20px}
   .log-pose{right:8px;bottom:max(16px,env(safe-area-inset-bottom));width:84px;min-height:44px;justify-content:center;gap:5px;padding:8px 4px;font-size:7px;letter-spacing:.6px}
   .log-pose>span:last-child{display:none}
   .log-pose>span:first-child{font-size:21px}
-  .hero-shade{background:linear-gradient(90deg,color-mix(in srgb,var(--theme-tint) 88%,transparent),color-mix(in srgb,var(--theme-tint) 38%,transparent)),linear-gradient(0deg,var(--deep),transparent 70%)}
+  .hero-shade{background:linear-gradient(90deg,#020c15df,#020c1560),linear-gradient(0deg,#020c15,transparent 70%)}
   .hero-content>.eyebrow{max-width:290px;line-height:1.8}
   .hero-content>.eyebrow>span{flex-shrink:0}
   .journey-card p,.skill-group li{font-size:13px}
