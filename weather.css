@@ -1,0 +1,41 @@
+#weather-open{grid-column:1/-1;justify-self:end;background:none;border:0;border-bottom:1px solid #ffffff45;color:var(--gold);font:600 9px var(--sans);padding:3px 0;cursor:pointer;margin-top:3px}
+#weather-open:focus-visible,.weather-location button:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+#weather-dialog{width:min(630px,92vw)}#weather-dialog h2{font-size:43px}
+#weather-dialog p{font-size:12px;line-height:1.8}
+#weather-details{padding:16px;border-left:2px solid var(--light-ink);background:var(--panel);min-height:90px}
+.weather-location{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.weather-location button{font:600 11px var(--sans);padding:11px 14px;background:var(--panel);color:var(--ink);border:1px solid var(--line);cursor:pointer}
+.weather-location button:disabled,#sound-toggle:disabled{opacity:.6;cursor:wait}
+#weather-dialog .weather-privacy{font-size:10px;color:#596879}
+.sound-settings{padding-top:24px;border-top:1px solid var(--line);margin-top:24px}
+.sound-settings .eyebrow{font-size:9px!important}.sound-settings>p{color:var(--ink)}
+.sound-settings label{display:flex;justify-content:space-between;font-size:11px;margin:24px 0 7px}
+#sound-volume{display:block;width:100%;accent-color:var(--light-ink);cursor:pointer;min-height:25px}
+#sound-status{font-size:10px!important;min-height:22px}
+#weather-dialog .weather-attribution{border-top:1px solid var(--line);margin-top:24px;padding-top:15px;font-size:9px;color:#596879}
+.weather-attribution a{text-decoration:underline;text-underline-offset:3px}
+.weather-particles{position:absolute;inset:0;overflow:hidden;z-index:-1;pointer-events:none;opacity:0;transition:opacity 1.5s}
+.weather-particles i{position:absolute;top:-120px;left:var(--drop-x);height:60px;width:1px;background:linear-gradient(transparent,#d8f1ffb0);animation:rainfall var(--drop-duration) var(--drop-delay) linear infinite;animation-play-state:paused}
+[data-weather="rain"] .weather-particles,[data-weather="storm"] .weather-particles,[data-weather="snow"] .weather-particles{opacity:.6}
+[data-weather="rain"] .weather-particles i,[data-weather="storm"] .weather-particles i,[data-weather="snow"] .weather-particles i{animation-play-state:running}
+[data-weather="storm"] .weather-particles i{width:2px;height:90px}
+[data-weather="snow"] .weather-particles i{height:5px;width:5px;border-radius:50%;background:#edf8ff;animation-name:snowfall;animation-duration:calc(var(--drop-duration) * 10)}
+.weather-mist{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:-1;opacity:0;transition:opacity 2s}
+.weather-mist:before,.weather-mist:after{content:'';position:absolute;inset:25% -35% 0;background:radial-gradient(ellipse at 30% 50%,#b3cddd70,transparent 60%);animation:mist-drift 22s ease-in-out infinite alternate}
+.weather-mist:after{inset:0 -35% 25%;animation-delay:-12s}
+[data-weather="fog"] .weather-mist{opacity:.7}
+[data-weather="cloud"] .weather-mist{opacity:.22}
+[data-weather="wind"] .weather-mist,[data-weather="storm"] .weather-mist{opacity:.35}
+[data-weather="wind"] .weather-mist:before,[data-weather="storm"] .weather-mist:before{animation-duration:7s}
+[data-weather="rain"] .hero-art,[data-weather="storm"] .hero-art{filter:grayscale(.4) saturate(.6) brightness(.65)}
+[data-weather="cloud"] .hero-art{filter:grayscale(.3) saturate(.65) brightness(.85)}
+[data-weather="fog"] .hero-art{filter:grayscale(.4) saturate(.5) brightness(.9)}
+[data-weather="snow"] .hero-art{filter:grayscale(.5) sepia(.2) hue-rotate(165deg) brightness(1.05)}
+[data-weather="wind"] .hero-art{animation-duration:8s}
+[data-weather="rain"] .spray,[data-weather="storm"] .spray,[data-weather="snow"] .spray,[data-weather="fog"] .spray{display:none}
+.motion-off .weather-particles,.motion-off .weather-mist{display:none}
+@keyframes rainfall{to{transform:translate3d(-100px,1200px,0)}}
+@keyframes snowfall{to{transform:translate3d(130px,1200px,0)}}
+@keyframes mist-drift{to{transform:translate3d(12%,3%,0)}}
+@media(max-width:700px){.weather-particles i:nth-child(n+19){display:none}#weather-dialog{padding:40px 23px 22px}#weather-dialog h2{font-size:34px}.theme-dock{bottom:77px}#theme-status{max-width:260px;white-space:normal}.theme-dock select{max-width:170px}}
+@media(prefers-reduced-motion:reduce){.weather-particles,.weather-mist{display:none}.weather-particles,.weather-mist,.hero-art{transition:none}}

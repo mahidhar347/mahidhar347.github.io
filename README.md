@@ -24,6 +24,16 @@ The page includes cursor-responsive ocean movement and compass rotation, floatin
 
 ## Verification
 
+## Weather and cinematic audio
+
+Live weather is the default for new visitors; earlier manually pinned moods are preserved. Hourly rotation and fixed moods remain selectable. Open-Meteo supplies modeled current conditions for Bengaluru, refreshed every 15 minutes while weather mode is active. Rain, snow, mist, cloud, and wind visuals follow WMO codes; strong wind begins at 30 km/h. API failures, invalid units, or data more than two hours from the current clock revert to hourly themes and stop weather audio.
+
+Weather & sound opens controls for Bengaluru or optional browser geolocation. Visitor coordinates are rounded to one decimal degree and used in memory only, with a clear notice before permission is requested. They are sent only to Open-Meteo, not to GitHub or a tracking service. The displayed location is “Your area.” The original portfolio's Bengaluru label continues to describe Mahidhar's professional home, not the visitor.
+
+Sound is opt-in each visit, synthesized locally with Web Audio: low ocean surf, band-limited wind, rain, and occasional low-pass thunder. It starts at 35% adjustable volume with output compression. It pauses in background tabs, stops on leaving weather mode or page navigation, and never records audio. Reduced-motion and Pause Motion suppress weather particles and mist; there are no lightning flashes. Audio cannot be verified by appearance alone; listen at a comfortable volume on the target device.
+
+Data documentation and attribution: https://open-meteo.com/en/docs
+
 JavaScript syntax, HTML section links, unique IDs, and local asset references have been checked. A visual browser check is still needed: the in-app browser blocked local file previews during development. GitHub publishing requires account access and a successful Pages deployment; the expected address above is not a claim that the site is live.
 
 Official instructions: https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
