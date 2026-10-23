@@ -13,6 +13,7 @@
   let timer;
   let preference = 'weather';
   let weatherState = null;
+  let weatherLoading = true;
   const valid = value => value === 'weather' || value === 'auto' || themes.includes(value);
   // IST boundaries keep everyone on the same voyage, regardless of their device timezone.
   const themeForTime = now => themes[Math.floor((now + indiaOffset) / hourLength) % themes.length];
@@ -32,7 +33,7 @@
     meta.content = colors[active];
     root.dataset.mode = preference;
     root.dataset.weather = preference === 'weather' && weatherState ? weatherState.kind : 'none';
-    const text = preference === 'weather' ? (weatherState?.summary || 'Weather unavailable · hourly mood for now') : names[active] + (preference === 'auto' ? ' · changes hourly, IST' : ' · your chosen mood');
+    const text = preference === 'weather' ? (weatherState?.summary || (weatherLoading ? 'Checking the weather…' : 'Weather unavailable · hourly mood for now')) : names[active] + (preference === 'auto' ? ' · changes hourly, IST' : ' · your chosen mood');
     if (status.textContent !== text) status.textContent = text;
     if (preference === 'auto' || (preference === 'weather' && !weatherState)) {
       status.title = 'Next mood at ' + new Intl.DateTimeFormat('en-IN', { hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Kolkata' }).format(new Date(now + nextBoundary(now))) + ' IST';
@@ -46,7 +47,8 @@
     update();
     window.dispatchEvent(new CustomEvent('voyage-mode', { detail: preference }));
   });
-  window.addEventListener('voyage-weather', event => { weatherState = event.detail; update(); });
+  window.addEventListener('voyage-weather', event => { weatherState = event.detail; weatherLoading = false; update(); });
+  window.addEventListener('voyage-weather-loading', () => { weatherLoading = true; update(); });
   window.addEventListener('storage', event => {
     if (event.key === preferenceKey || event.key === null) { preference = valid(event.newValue) ? event.newValue : 'weather'; update(); window.dispatchEvent(new CustomEvent('voyage-mode', { detail: preference })); }
   });

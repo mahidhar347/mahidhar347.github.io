@@ -13,7 +13,7 @@ test('maps weather codes, wind and day/night without confusing snow with rain',(
 });
 test('sound never autoplays, clamps volume and suspends when the page is hidden',async()=>{
   let instances=0;
-  const param=()=>({value:0,setTargetAtTime(){},setValueAtTime(){},linearRampToValueAtTime(){},exponentialRampToValueAtTime(){}});
+  const param=()=>({value:0,cancelScheduledValues(){},setTargetAtTime(){},setValueAtTime(){},linearRampToValueAtTime(){},exponentialRampToValueAtTime(){}});
   const node=()=>({connect(){},disconnect(){},start(){},stop(){},gain:param(),frequency:param(),Q:param()});
   class AudioContext{
     constructor(){instances++;this.sampleRate=100;this.currentTime=0;this.destination={};this.state='suspended';}
@@ -39,8 +39,11 @@ test('weather mode, failure fallback, manual choice and hourly boundaries coexis
   const context={window,document:{documentElement:root,querySelector:s=>s==='#theme-choice'?choice:s==='#theme-status'?status:meta,addEventListener:(n,f)=>listeners[n]=f},localStorage:{getItem:()=>saved,setItem:(k,v)=>saved=v},Date:class extends Date{static now(){return now}},Intl,CustomEvent:class{constructor(type,init){this.type=type;this.detail=init.detail}},setTimeout:(f,delay)=>{timer={f,delay};return 1},clearTimeout:()=>{}};
   vm.runInNewContext(fs.readFileSync(require.resolve('../themes.js'),'utf8'),context);
   assert.equal(choice.value,'weather');assert.equal(root.dataset.weather,'none');assert.equal(root.dataset.theme,'sunset');
+  assert.match(status.textContent,/Checking the weather/);
   listeners['voyage-weather']({detail:{kind:'rain',theme:'midnight',summary:'Bengaluru · rain'}});assert.equal(root.dataset.weather,'rain');assert.equal(root.dataset.theme,'midnight');
   listeners['voyage-weather']({detail:null});assert.equal(root.dataset.weather,'none');assert.equal(root.dataset.theme,'sunset');
+  assert.match(status.textContent,/unavailable/);
+  listeners['voyage-weather-loading']();assert.match(status.textContent,/Checking the weather/);
   choice.value='day';listeners.change();assert.equal(root.dataset.theme,'day');assert.equal(saved,'day');
   choice.value='auto';listeners.change();assert.equal(timer.delay,60050);
   now+=60000;timer.f();assert.equal(root.dataset.theme,'midnight');

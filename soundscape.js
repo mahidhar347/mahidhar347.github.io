@@ -2,7 +2,7 @@
   'use strict';
   // All sound is synthesized locally. No audio files, microphones, or third-party sound requests.
   class VoyageSoundscape {
-    constructor() { this.context = null; this.enabled = false; this.volume = .35; this.kind = 'clear'; this.thunderTimer = null; }
+    constructor() { this.context = null; this.enabled = false; this.volume = .35; this.kind = 'clear'; this.thunderTimer = null; this.generation = 0; }
     build() {
       const Audio = window.AudioContext || window.webkitAudioContext;
       if (!Audio) throw new Error('Audio is unavailable in this browser.');
@@ -32,12 +32,17 @@
       swell.connect(swellDepth); swellDepth.connect(this.layers.sea.gain); swell.start();
     }
     async start() {
+      const generation = ++this.generation;
       if (!this.context) this.build();
       await this.context.resume();
+      if (generation !== this.generation) return;
       if (this.context.state !== 'running') throw new Error('Tap Enable sound again to start audio.');
       this.enabled = true; this.adjust();
     }
-    async stop() { this.enabled = false; clearTimeout(this.thunderTimer); if (this.context) { this.master.gain.value = 0; await this.context.suspend(); } }
+    async stop() {
+      ++this.generation; this.enabled = false; clearTimeout(this.thunderTimer);
+      if (this.context) { this.master.gain.cancelScheduledValues(this.context.currentTime); this.master.gain.value = 0; await this.context.suspend(); }
+    }
     setVolume(value) { this.volume = Math.min(1, Math.max(0, Number(value) || 0)); this.adjust(); }
     setWeather(kind) { this.kind = kind; this.adjust(); }
     adjust() {

@@ -28,6 +28,7 @@
     const id=++requestId;
     const timeout=setTimeout(()=>currentController.abort(),10000);
     details.textContent=`Checking ${locationName}’s horizon…`;
+    window.dispatchEvent(new CustomEvent('voyage-weather-loading'));
     try {
       const params = new URLSearchParams({...coordinates,current:'temperature_2m,is_day,weather_code,wind_speed_10m',timezone:'auto',forecast_days:'1',timeformat:'unixtime'});
       const response=await fetch('https://api.open-meteo.com/v1/forecast?'+params,{signal:currentController.signal,credentials:'omit',referrerPolicy:'no-referrer'});
@@ -74,10 +75,13 @@
     },()=>{locate.disabled=false;details.textContent='Location was not shared. Your previous weather source remains selected. Choose Use Bengaluru to reset it.';},{enableHighAccuracy:false,timeout:12000,maximumAge:900000});
   });
   soundButton.addEventListener('click',async()=>{
-    if(sound.enabled){await stopSound();return;}
-    if(!active()||!weather){soundStatus.textContent='Choose Live weather and wait for a current forecast before enabling sound.';return;}
+    if(soundButton.disabled)return;
     soundButton.disabled=true;
-    try {sound.setWeather(weather.kind);await sound.start();if(!active()||!weather||document.hidden){await stopSound();return;}soundButton.textContent='Mute sound';soundButton.setAttribute('aria-pressed','true');soundStatus.textContent=`Sound on · ${weather.label.toLowerCase()}.`;}
+    try {
+      if(sound.enabled){await stopSound();return;}
+      if(!active()||!weather){soundStatus.textContent='Choose Live weather and wait for a current forecast before enabling sound.';return;}
+      sound.setWeather(weather.kind);await sound.start();if(!active()||!weather||document.hidden){await stopSound();return;}soundButton.textContent='Mute sound';soundButton.setAttribute('aria-pressed','true');soundStatus.textContent=`Sound on · ${weather.label.toLowerCase()}.`;
+    }
     catch(error){await stopSound('Audio could not start. Try Enable sound again, or check your browser’s audio settings.');}
     finally{soundButton.disabled=false;}
   });

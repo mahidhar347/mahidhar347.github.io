@@ -34,6 +34,8 @@ Sound is opt-in each visit, synthesized locally with Web Audio: low ocean surf, 
 
 Data documentation and attribution: https://open-meteo.com/en/docs
 
-JavaScript syntax, HTML section links, unique IDs, and local asset references have been checked. A visual browser check is still needed: the in-app browser blocked local file previews during development. GitHub publishing requires account access and a successful Pages deployment; the expected address above is not a claim that the site is live.
+The site is deployed at https://mahidhar347.github.io/ through GitHub Actions. Run regression checks with `node --test tests/*.test.cjs` from this folder. Tests cover weather mapping, forecast failures and stale data, hourly scheduling, pinned themes, asynchronous sound toggles, and background audio suspension. Public-site browser checks include desktop and mobile layouts, modal navigation, weather retrieval, theme selection and audio controls. Audio quality still needs human listening on the target device.
+
+Mobile Ocean Controls expands on demand, keeping content clear. All fixed phone controls have 44px targets; the weather panel closes back to its launcher. Weather filters preserve night lighting. New forecasts show a loading status before falling back on failure. Page-sharing metadata and an original compass favicon are included.
 
 Official instructions: https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
