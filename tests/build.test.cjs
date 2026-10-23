@@ -10,7 +10,7 @@ test('deployment versions every local script, stylesheet and icon with its exact
   build(output);
   const html=fs.readFileSync(path.join(output,'index.html'),'utf8');
   const resources=[...html.matchAll(/(?:href|src)="([^"?]+\.(?:css|js|svg))\?v=([a-f0-9]{12})"/g)];
-  assert.equal(resources.length,15);
+  assert.equal(resources.length,17);
   for(const [,file,hash] of resources){
     const actual=crypto.createHash('sha256').update(fs.readFileSync(path.join(output,file))).digest('hex').slice(0,12);
     assert.equal(hash,actual);

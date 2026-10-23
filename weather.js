@@ -4,6 +4,7 @@
   const dialog = document.querySelector('#weather-dialog'), details = document.querySelector('#weather-details');
   const soundButton = document.querySelector('#sound-toggle'), soundStatus = document.querySelector('#sound-status');
   const sound = new window.VoyageSoundscape();
+  window.addEventListener('voyage-music-play',()=>{stopSound('Weather sounds paused while One Piece music plays.');});
   let coordinates = {latitude:12.97, longitude:77.59}, locationName = 'Bengaluru';
   let timer, controller, requestId = 0, lastSuccess = 0, weather = null;
   const refreshPeriod = 15 * 60 * 1000;
@@ -80,6 +81,7 @@
     try {
       if(sound.enabled){await stopSound();return;}
       if(!active()||!weather){soundStatus.textContent='Choose Live weather and wait for a current forecast before enabling sound.';return;}
+      window.dispatchEvent(new Event('voyage-ambience-play'));
       sound.setWeather(weather.kind);await sound.start();if(!active()||!weather||document.hidden){await stopSound();return;}soundButton.textContent='Mute sound';soundButton.setAttribute('aria-pressed','true');soundStatus.textContent=`Sound on · ${weather.label.toLowerCase()}.`;
     }
     catch(error){await stopSound('Audio could not start. Try Enable sound again, or check your browser’s audio settings.');}

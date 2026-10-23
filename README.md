@@ -41,3 +41,7 @@ Mobile Ocean Controls expands on demand, keeping content clear. All fixed phone 
 Deployments run `node build.cjs` to create `_site/`. Every local stylesheet, script, and favicon gets a content hash in its URL so updated pages cannot accidentally use older cached code. The original source still opens directly for local previews. No dependencies need to be installed. Build artifacts, source tests, and original full-resolution artwork are excluded from the public deployment.
 
 Official instructions: https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
+
+## One Piece music
+
+Ocean controls → One Piece music opens a visible mini-player for “We Are!” by Hiroshi Kitadani, from ONE PIECE Official - ENG: https://www.youtube.com/watch?v=YoeP9w5UIlg. The official YouTube player streams the upload directly; no music file is downloaded or rehosted. Its API is loaded only after a visitor opens the player, which also loads YouTube's third-party resources. The player supports play/pause, volume and repeat, with a direct source link if embedding is unavailable in a visitor's region. Press Play if the browser blocks the initial playback request. Closing the player stops the music. Modal dialogs and background tabs pause playback so the video is not used as a hidden audio source. Music and weather ambience pause each other to avoid overlapping soundtracks. No music autostarts on page load.
