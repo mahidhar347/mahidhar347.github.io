@@ -1,0 +1,5 @@
+.ocean-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-3;pointer-events:none}
+.ocean-live .hero-art{visibility:hidden;animation:none!important;filter:none!important}
+.ocean-live .hero-shade{background:linear-gradient(90deg,#041824e8 0%,#071e2990 37%,transparent 78%),linear-gradient(0deg,#061923 0%,transparent 22%,transparent 82%,#06192350);filter:none}
+.ocean-live .weather-mist{display:none}
+@media(max-width:700px){.ocean-live .hero-shade{background:linear-gradient(90deg,#041824ce,#071e2940),linear-gradient(0deg,#061923,transparent 35%)}}
