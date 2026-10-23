@@ -38,4 +38,6 @@ The site is deployed at https://mahidhar347.github.io/ through GitHub Actions. R
 
 Mobile Ocean Controls expands on demand, keeping content clear. All fixed phone controls have 44px targets; the weather panel closes back to its launcher. Weather filters preserve night lighting. New forecasts show a loading status before falling back on failure. Page-sharing metadata and an original compass favicon are included.
 
+Deployments run `node build.cjs` to create `_site/`. Every local stylesheet, script, and favicon gets a content hash in its URL so updated pages cannot accidentally use older cached code. The original source still opens directly for local previews. No dependencies need to be installed. Build artifacts, source tests, and original full-resolution artwork are excluded from the public deployment.
+
 Official instructions: https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site

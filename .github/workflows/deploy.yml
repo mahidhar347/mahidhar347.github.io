@@ -20,10 +20,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/configure-pages@v5
       - name: Prepare public files
-        run: |
-          mkdir _site
-          cp index.html favicon.svg style.css map.css effects.css layout.css themes.css weather.css usability.css script.js effects.js themes.js weather-model.js soundscape.js weather.js controls.js .nojekyll _site/
-          cp -R assets _site/assets
+        run: node build.cjs
       - uses: actions/upload-pages-artifact@v4
         with:
           path: _site
