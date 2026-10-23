@@ -52,7 +52,24 @@
     const hullGeo=new T.BufferGeometry();hullGeo.setAttribute('position',new T.Float32BufferAttribute(vertices,3));hullGeo.setIndex(indices);hullGeo.computeVertexNormals();
     const hull=new T.Mesh(hullGeo,wood);hull.material.side=T.DoubleSide;boat.add(hull);
     function beam(a,b,r,mat,parent=boat){const start=new T.Vector3(...a),end=new T.Vector3(...b),v=end.clone().sub(start);const m=new T.Mesh(new T.CylinderGeometry(r,r,v.length(),8),mat);m.position.copy(start.add(end).multiplyScalar(.5));m.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),v.normalize());parent.add(m);return m;}
-    const deck=new T.Mesh(new T.BoxGeometry(1.55,.12,3.8),trim);deck.position.y=.22;boat.add(deck);
+    const deckPoints=[new T.Vector3(0,.26,0)],deckIndices=[];
+    for(let i=0;i<40;i++){
+      const a=i/40*Math.PI*2;deckPoints.push(new T.Vector3(Math.cos(a)*.89,.26,Math.sin(a)*2.52));
+      deckIndices.push(0,i+1,(i+1)%40+1);
+    }
+    const deckGeo=new T.BufferGeometry().setFromPoints(deckPoints);deckGeo.setIndex(deckIndices);deckGeo.computeVertexNormals();
+    const deck=new T.Mesh(deckGeo,trim);deck.material.side=T.DoubleSide;boat.add(deck);
+    const seam=new T.MeshStandardMaterial({color:0x63492b,roughness:1});
+    for(let z=-2.2;z<2.3;z+=.22){const half=.88*Math.sqrt(Math.max(0,1-z*z/(2.52*2.52)));beam([-half,.275,z],[half,.275,z],.009,seam);}
+    for(let i=0;i<28;i++){
+      const a=i/28*Math.PI*2,b=(i+1)/28*Math.PI*2;
+      const p=[Math.cos(a)*.9,.66,Math.sin(a)*2.5],q=[Math.cos(b)*.9,.66,Math.sin(b)*2.5];
+      beam(p,q,.027,trim);beam([p[0],.26,p[2]],p,.019,wood);
+    }
+    const cabin=new T.Mesh(new T.BoxGeometry(1.1,.65,.85),wood);cabin.position.set(0,.6,1.2);boat.add(cabin);
+    const roof=new T.Mesh(new T.BoxGeometry(1.23,.09,1),trim);roof.position.set(0,.97,1.2);boat.add(roof);
+    const glass=new T.MeshStandardMaterial({color:0xf0b55a,emissive:0xe99d34,emissiveIntensity:.4,roughness:.3});
+    for(const x of [-.56,.56])for(const z of [1,1.4]){const window=new T.Mesh(new T.CircleGeometry(.095,12),glass);window.rotation.y=x<0?-Math.PI/2:Math.PI/2;window.position.set(x,.64,z);boat.add(window);}
     beam([0,.2,0],[0,5,0],.065,wood);beam([-1.65,4.3,0],[1.65,4.3,0],.045,wood);
     beam([0,.3,-2.3],[0,1,-3.5],.045,wood);
     const sailGeo=new T.PlaneGeometry(3,3,20,20);const sail=new T.Mesh(sailGeo,sailMat);sail.position.set(0,2.8,.1);boat.add(sail);
