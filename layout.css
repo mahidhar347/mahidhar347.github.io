@@ -3,6 +3,7 @@
 .hero-content{max-width:1150px;padding-top:170px;padding-bottom:160px}
 h1{font-size:clamp(68px,7vw,108px);letter-spacing:-4px}
 .hero-facts{margin-top:32px}
+.hero-content,.hero-content h1,.hero-actions,.hero-facts{animation:none;opacity:1;translate:none}
 .scroll-cue{bottom:85px}
 @media(min-width:1600px){.hero-content{padding-top:190px}}
 @media(max-width:1050px) and (min-width:701px){h1{font-size:85px}.hero-content{padding-top:175px}}
