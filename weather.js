@@ -4,7 +4,7 @@
   const dialog = document.querySelector('#weather-dialog'), details = document.querySelector('#weather-details');
   const soundButton = document.querySelector('#sound-toggle'), soundStatus = document.querySelector('#sound-status');
   const sound = new window.VoyageSoundscape();
-  window.addEventListener('voyage-music-play',()=>{stopSound('Weather sounds paused while One Piece music plays.');});
+  window.addEventListener('voyage-music-play',()=>{stopSound('Weather sounds paused while background music plays.');});
   let coordinates = {latitude:12.97, longitude:77.59}, locationName = 'Bengaluru';
   let timer, controller, requestId = 0, lastSuccess = 0, weather = null;
   const refreshPeriod = 15 * 60 * 1000;

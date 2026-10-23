@@ -2,39 +2,33 @@ const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
-function setup(){
-  const elements=new Map(),listeners={},events=[],players=[];
-  const make=()=>({listeners:{},attributes:{},hidden:false,disabled:false,value:'35',textContent:'',classList:{remove(){}},append(){},replaceChildren(){},focus(){},getClientRects:()=>[],setAttribute(k,v){this.attributes[k]=v;},addEventListener(k,f){this.listeners[k]=f;}});
+function setup(options={}){
+  const elements=new Map(),listeners={},events=[];let playCalls=0;
+  const make=()=>({listeners:{},attributes:{},value:'35',textContent:'',append(){},setAttribute(k,v){this.attributes[k]=v;},addEventListener(k,f){this.listeners[k]=f;}});
   const get=selector=>{if(!elements.has(selector))elements.set(selector,make());return elements.get(selector);};
-  get('#music-radio').hidden=true;
-  class Player{
-    constructor(id,options){this.options=options;this.pauses=0;this.destroyed=false;players.push(this);}
-    playVideo(){this.options.events.onStateChange({data:1});}
-    pauseVideo(){this.pauses++;this.options.events.onStateChange({data:2});}
-    setVolume(value){this.volume=value;}destroy(){this.destroyed=true;}
-  }
-  const document={hidden:false,head:make(),querySelector:get,querySelectorAll:()=>[],createElement:make,addEventListener:(type,f)=>listeners[type]=f};
-  const window={YT:{Player},addEventListener:(type,f)=>listeners[type]=f,dispatchEvent:event=>{events.push(event);listeners[event.type]?.(event);}};
-  let launch;
-  document.querySelector('#appearance-panel').append=element=>launch=element;
-  vm.runInNewContext(fs.readFileSync(require.resolve('../music.js'),'utf8'),{document,window,location:{protocol:'https:',origin:'https://mahidhar347.github.io'},Event:class{constructor(type){this.type=type;}},MutationObserver:class{observe(){}},setTimeout,clearTimeout,console});
-  return{get,document,window,players,listeners,events,launch};
+  const audio=get('#voyage-music');audio.paused=true;audio.error=null;
+  audio.play=async()=>{playCalls++;if(options.reject)throw Error('blocked');audio.paused=false;audio.listeners.play?.();if(options.pending)await options.pending;};
+  audio.pause=()=>{audio.paused=true;audio.listeners.pause?.();};audio.load=()=>{};
+  const document={hidden:false,querySelector:get,createElement:make,addEventListener:(type,f)=>listeners[type]=f};
+  const window={addEventListener:(type,f)=>listeners[type]=f,dispatchEvent:event=>events.push(event)};
+  const stored={};
+  vm.runInNewContext(fs.readFileSync(require.resolve('../music.js'),'utf8'),{document,window,localStorage:{getItem:()=>null,setItem:(k,v)=>stored[k]=v},Event:class{constructor(type){this.type=type;}}});
+  return{get,audio,document,listeners,events,stored,calls:()=>playCalls};
 }
-test('official music creates no player until clicked and keeps YouTube controls visible',async()=>{
-  const h=setup();assert.equal(h.players.length,0);assert.equal(h.get('#music-radio').hidden,true);
-  await h.launch.listeners.click();const player=h.players[0];
-  assert.equal(h.get('#music-radio').hidden,false);assert.equal(player.options.videoId,'YoeP9w5UIlg');
-  assert.equal(player.options.host,'https://www.youtube-nocookie.com');assert.equal(player.options.playerVars.controls,1);
-  player.options.events.onReady({target:player});assert.equal(player.volume,35);
-  assert.ok(h.events.some(e=>e.type==='voyage-music-play'));
-  h.get('#music-play').listeners.click();assert.match(h.get('#music-status').textContent,/paused/);
-  h.get('#music-volume').value='42';h.get('#music-volume').listeners.input();assert.equal(player.volume,42);
-  h.get('#music-close').listeners.click();assert.equal(player.destroyed,true);assert.equal(h.get('#music-radio').hidden,true);
+test('audio-only music waits for a click, plays, changes volume, and pauses',async()=>{
+  const h=setup();assert.equal(h.calls(),0);assert.equal(h.audio.volume,.35);
+  await h.get('#music-toggle').listeners.click();assert.equal(h.calls(),1);assert.equal(h.audio.paused,false);
+  assert.equal(h.get('#music-toggle').attributes['aria-pressed'],'true');assert.ok(h.events.some(e=>e.type==='voyage-music-play'));
+  h.get('#music-volume').value='42';h.get('#music-volume').listeners.input();assert.equal(h.audio.volume,.42);assert.equal(h.stored['mahidhar-music-volume'],'42');
+  await h.get('#music-toggle').listeners.click();assert.equal(h.audio.paused,true);assert.equal(h.get('#music-toggle').attributes['aria-pressed'],'false');
 });
-test('weather audio and background-tab transitions pause music; player errors offer a retry',async()=>{
-  const h=setup();await h.launch.listeners.click();const player=h.players[0];player.options.events.onReady({target:player});
-  h.listeners['voyage-ambience-play']();assert.ok(player.pauses>0);
-  h.document.hidden=true;h.listeners.visibilitychange();assert.ok(player.pauses>1);
-  player.options.events.onError({data:150});assert.match(h.get('#music-status').textContent,/official YouTube link/);assert.equal(h.get('#music-play').textContent,'Retry player');
-  h.listeners.pagehide();assert.equal(player.destroyed,true);
+test('cancelling a pending audio load cannot restart music afterwards',async()=>{
+  let release;const pending=new Promise(resolve=>release=resolve);const h=setup({pending});
+  const first=h.get('#music-toggle').listeners.click();await h.get('#music-toggle').listeners.click();release();await first;
+  assert.equal(h.audio.paused,true);assert.equal(h.get('#music-toggle').attributes['aria-pressed'],'false');
+});
+test('playback failure offers retry, and ambience or hidden tabs pause music',async()=>{
+  const failed=setup({reject:true});await failed.get('#music-toggle').listeners.click();assert.match(failed.get('#music-status').textContent,/could not start/);
+  const h=setup();await h.get('#music-toggle').listeners.click();h.listeners['voyage-ambience-play']();assert.equal(h.audio.paused,true);
+  await h.get('#music-toggle').listeners.click();h.document.hidden=true;h.listeners.visibilitychange();assert.equal(h.audio.paused,true);
 });

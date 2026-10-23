@@ -1,21 +1,14 @@
-#music-open{grid-column:1/-1;justify-self:end;min-height:36px;min-width:150px;background:none;border:0;border-bottom:1px solid #ffffff45;color:var(--gold);font:600 10px var(--sans);cursor:pointer;text-align:right}
-.music-radio[hidden]{display:none}
-.music-radio{position:fixed;bottom:100px;right:20px;width:360px;max-width:calc(100vw - 24px);max-height:calc(100svh - 130px);overflow:auto;overscroll-behavior:contain;z-index:25;background:var(--deep);color:var(--cream);border:1px solid var(--gold);box-shadow:0 10px 50px #0007;padding:14px}
-.music-radio>header{display:flex;justify-content:space-between;gap:10px;margin-bottom:14px}
-.music-radio header span{font:600 7px var(--sans);letter-spacing:1.8px;color:var(--gold)}
-.music-radio h2{font:600 25px var(--serif);letter-spacing:-.5px;margin:5px 0}
-.music-radio header p{font-size:8px;margin:0;color:#c3d4d7}
-#music-close{color:var(--cream);font-size:27px;background:none;border:0;width:44px;height:44px;flex-shrink:0;cursor:pointer}
-.music-video,.music-video iframe{width:100%;height:200px;min-height:200px;border:0;background:#000}
-.music-video{display:grid;place-items:center}.music-video>div{font-size:11px}
-.music-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;align-items:center;margin-top:14px}
-#music-play{min-height:44px;padding:10px;background:var(--gold);color:var(--deep);border:0;font:700 11px var(--sans);cursor:pointer}
-#music-play:disabled{opacity:.65;cursor:wait}
-.music-controls label{font-size:10px;display:flex;justify-content:space-between}
-#music-volume{grid-column:2;accent-color:var(--gold);width:100%;min-height:28px;margin:0}
-#music-status{font-size:10px;line-height:1.6;margin:12px 0 6px;color:#dae5df;min-height:16px}
-.music-source{font-size:9px;text-decoration:underline;text-underline-offset:3px;display:inline-flex;align-items:center;min-height:30px}
-.music-radio button:focus-visible,.music-radio a:focus-visible,#music-open:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-.music-launch-inline{margin-left:12px;font:600 11px var(--sans);padding:12px 14px;min-height:44px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
-@media(max-width:700px){#music-open{min-height:44px;font-size:11px;justify-self:stretch}.music-radio{right:12px;bottom:75px;max-height:calc(100svh - 90px);padding:12px}.music-launch-inline{margin:12px 0 0;display:block;width:100%}.music-radio header p{font-size:9px}}
-@media(max-height:500px){.music-radio{top:10px;bottom:10px;max-height:calc(100svh - 20px)}}
+#music-controls{grid-column:1/-1;margin-top:6px;padding-top:10px;border-top:1px solid #ffffff25;min-width:0}
+#music-toggle{display:block;width:100%;min-height:44px;background:var(--gold);color:var(--deep);border:0;font:700 11px var(--sans);padding:10px 14px;cursor:pointer}
+#music-toggle:focus-visible,.music-inline-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.music-volume-row{display:grid;grid-template-columns:1fr;gap:4px;margin-top:10px}
+.music-volume-row label{display:flex;justify-content:space-between;font-size:9px;letter-spacing:0;color:#d7e4e3;font-weight:500}
+#music-volume{width:100%;min-height:25px;margin:0;accent-color:var(--gold);cursor:pointer}
+#music-status{font-size:9px;color:#d7e4e3;line-height:1.5;margin:4px 0;max-width:260px}
+.music-credit{max-width:260px;font-size:8px;line-height:1.6;color:#bdcbc6;margin:6px 0 0}
+.music-credit a{text-decoration:underline;text-underline-offset:2px}
+.music-inline-toggle{display:block;width:100%;font:600 11px var(--sans);padding:12px 14px;min-height:44px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;margin-top:16px}
+/* Keep expanded audio controls out of the page until requested. */
+.theme-dock{bottom:18px;max-height:calc(100svh - 120px);overflow:auto}
+@media(min-width:701px){#music-controls .music-volume-row,#music-controls .music-credit{display:none}#music-controls:focus-within .music-volume-row,#music-controls:focus-within .music-credit,#music-controls:hover .music-volume-row,#music-controls:hover .music-credit{display:grid}.theme-dock{max-width:310px}}
+@media(max-width:700px){.theme-dock{bottom:calc(max(16px,env(safe-area-inset-bottom)) + 56px);max-height:calc(100svh - 105px)}#music-status,.music-credit{font-size:10px;max-width:none}.music-volume-row label{font-size:10px}}

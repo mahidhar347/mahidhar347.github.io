@@ -42,6 +42,6 @@ Deployments run `node build.cjs` to create `_site/`. Every local stylesheet, scr
 
 Official instructions: https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
 
-## One Piece music
+## Audio-only background music
 
-Ocean controls → One Piece music opens a visible mini-player for “We Are!” by Hiroshi Kitadani, from ONE PIECE Official - ENG: https://www.youtube.com/watch?v=YoeP9w5UIlg. The official YouTube player streams the upload directly; no music file is downloaded or rehosted. Its API is loaded only after a visitor opens the player, which also loads YouTube's third-party resources. The player supports play/pause, volume and repeat, with a direct source link if embedding is unavailable in a visitor's region. Press Play if the browser blocks the initial playback request. Closing the player stops the music. Modal dialogs and background tabs pause playback so the video is not used as a hidden audio source. Music and weather ambience pause each other to avoid overlapping soundtracks. No music autostarts on page load.
+Ocean controls → Play background music starts The Buccaneer's Haul by Shane Ivers, sourced from Silverman Sound Studios under CC BY 4.0. This is pirate-adventure background music, not an official One Piece recording. Attribution and provenance are in `assets/MUSIC-LICENSE.md` and displayed by the music controls. The soundtrack is served with the site in AAC/M4A format, loops, and has pause and volume controls. There is no video or third-party player. Only volume is remembered; playback starts after the visitor clicks Play. It pauses when the tab is hidden, on navigation, or when weather ambience is enabled. Playing music mutes weather ambience.
