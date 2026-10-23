@@ -45,18 +45,3 @@ Official instructions: https://docs.github.com/en/pages/getting-started-with-git
 ## Audio-only background music
 
 Ocean controls → Play background music starts The Buccaneer's Haul by Shane Ivers, sourced from Silverman Sound Studios under CC BY 4.0. This is pirate-adventure background music, not an official One Piece recording. Attribution and provenance are in `assets/MUSIC-LICENSE.md` and displayed by the music controls. The soundtrack is served with the site in AAC/M4A format, loops, and has pause and volume controls. There is no video or third-party player. Only volume is remembered; playback starts after the visitor clicks Play. It pauses when the tab is hidden, on navigation, or when weather ambience is enabled. Playing music mutes weather ambience.
-# Live ocean scene
-
-The ship follows a clock-based 24-hour loop starting/returning at 06:00 IST.
-It is near the foreground in the morning, farther out at evening, and follows
-the returning arc overnight. Refreshing does not restart it. Wave buoyancy is
-independent of this slow daily voyage; reduced motion freezes both on screen.
-
-The hero uses Three.js 0.180.0 (loaded from jsDelivr) to render wave geometry,
-a curved sailing-ship hull, wind-billowed sails, distant cliffs, and a continuously
-flowing waterfall with spray. CPU buoyancy samples the same wave parameters as
-the ocean vertex shader. Mood changes alter scene lighting rather than filtering
-the artwork. The original illustration is retained if WebGL or the CDN fails.
-Motion-off freezes the scene; hidden tabs and an offscreen hero suspend rendering.
-The canvas is decorative and does not replace any accessible portfolio content.
-
