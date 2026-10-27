@@ -27,3 +27,18 @@ test('every route stage fits mobile and desktop widths and stays below the horiz
   }
   assert.throws(()=>state(NaN));assert.throws(()=>layout(state(morning),0,920));
 });
+test('ship heading agrees with actual travel rather than sliding backwards',()=>{
+  const outgoing=[2,8].map(h=>layout(state(morning+h*3600000),1280,920));
+  assert.ok(outgoing[1].x>outgoing[0].x);assert.ok(outgoing[1].y<outgoing[0].y);
+  const returning=[16,22].map(h=>layout(state(morning+h*3600000),1280,920));
+  assert.ok(returning[1].x<returning[0].x);assert.ok(returning[1].y>returning[0].y);
+  assert.ok(outgoing.every(p=>p.heading>0&&p.heading<90));
+  assert.ok(returning.every(p=>p.heading>180&&p.heading<270));
+});
+test('apparent size and waterline height share the same perspective projection',()=>{
+  for(const viewport of [[390,920],[1280,920],[1920,920]]){
+    const points=[0,2,6,10,12,18,23].map(h=>layout(state(morning+h*3600000),...viewport));
+    const ratios=points.map(p=>p.width/(p.y-p.horizon));
+    assert.ok(ratios.every(r=>Math.abs(r-ratios[0])<1e-10));
+  }
+});

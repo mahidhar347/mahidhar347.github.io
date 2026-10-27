@@ -1,10 +1,15 @@
 # Layered Thousand Sunny voyage artwork
 
+The waterline-corrected v2 ship assets now supersede the original cutouts below.
+Current ship files are `sunny-{front,rear}-{dawn,day,sunset,midnight}-v2.webp`.
+The background plates remain v1. See `VOYAGE-WATERLINE-V2.md` for correction prompts
+and measured waterline alignment. This document retains the original v1 provenance.
+
 Built-in image generation produced the boat-free background plates and independently
 relit transparent ship layers. These are AI-generated fan artworks, not official anime
 assets or an exact simulation of sea conditions. No CSS colour filtering is used.
 
-Active optimized assets are `assets/ocean-empty-{dawn,day,sunset,midnight}-v1.jpg`
+First-revision optimized assets are `assets/ocean-empty-{dawn,day,sunset,midnight}-v1.jpg`
 and `assets/sunny-{front,rear}-{dawn,day,sunset,midnight}-v1.webp`.
 Generated PNG masters are retained in `previews/voyage-moods-v1/`.
 The existing approved day cutouts are in `previews/thousand-sunny-v1/`; the sunset

@@ -22,15 +22,23 @@ The hero combines a boat-free ocean plate with separate transparent front/rear
 Thousand Sunny fan-art layers. Each mood has independently lit artwork. The ship
 follows a clock-based daily route: near the viewer at 6 AM IST, farthest out at
 6 PM, and back at 6 AM. Refreshing does not reset it. The rear view is used outward
-and the front view on return, with gentle view blends at the turns. Depth changes
-its position and size. Subtle bobbing and ripples are decorative, not fluid physics.
+and the front view on return, with gentle view blends at the turns. Position and
+size share an inverse-distance ground-plane projection. Outward travel follows
+the rear-view ship's up/right heading; return follows its down/left front view.
+Waterline-corrected v2 artwork hides the submerged hull, and measured alpha padding
+aligns the visible contact foam with the projected surface. A trailing wake follows
+the heading and fades during turns. Small heave is scaled with distance. This is
+layered 2D animation, not a calculated buoyancy or fluid-dynamics simulation.
 
 Ocean controls → Preview a full day plays a 40-second demo. Return to actual time
 exits it; the demo also ends automatically. Pause motion freezes movement and
-disables the preview, including for reduced-motion preferences. Rendering stops
+prevents starting a new demo, including for reduced-motion preferences.
+The preview's Inspect journey time selector holds 6 am, noon, 6 pm or midnight
+for visual review. Return to actual time also works while the preview is paused.
+Rendering stops
 when the hero is offscreen or the tab is hidden. Failed artwork retains the old
 complete scene without drawing a second boat. Image sources and prompts are in
-`assets/VOYAGE-ARTWORK.md`.
+`assets/VOYAGE-ARTWORK.md` and `assets/VOYAGE-WATERLINE-V2.md`.
 
 ## Hourly ocean moods
 

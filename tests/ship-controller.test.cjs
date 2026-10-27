@@ -22,7 +22,7 @@ test('loads a complete boat-free scene with matched front/rear images and a live
   const h=harness();await tick();const scene=h.art.children[0];
   assert.equal(scene.hidden,false);assert.match(h.art.style.backgroundImage,/ocean-empty-day-v1.jpg/);
   const images=h.elements.filter(e=>e.className?.startsWith('sunny-face'));
-  assert.ok(images.every(i=>i.src.includes('-day-v1.webp')));assert.ok(scene.dataset.phase);
+  assert.ok(images.every(i=>i.src.includes('-day-v2.webp')));assert.ok(scene.dataset.phase);
   assert.match(h.elements.find(e=>e.id==='voyage-clock-status').textContent,/Daily voyage/);
 });
 test('motion-off freezes route updates and disables the preview',async()=>{
@@ -41,4 +41,11 @@ test('artwork failure hides the extra ship and retains the original scene',async
   const h=harness({fail:true});await tick();assert.equal(h.art.children[0].hidden,true);
   assert.match(h.elements.find(e=>e.id==='voyage-clock-status').textContent,/unavailable/);
   assert.equal(h.elements.find(e=>e.id==='voyage-preview').disabled,true);
+});
+test('inspection selects a fixed time and a paused demo can still return to actual time',async()=>{
+  const h=harness();await tick();const button=h.elements.find(e=>e.id==='voyage-preview');
+  button.listeners.click();const inspect=h.elements.find(e=>e.id==='voyage-inspect');inspect.value='18';inspect.listeners.change();
+  assert.equal(h.art.children[0].dataset.phase,'0.500000');
+  h.root.classList.add('motion-off');h.observers[0]([{attributeName:'class'}]);
+  assert.equal(button.disabled,false);button.listeners.click();assert.equal(button['aria-pressed'],'false');assert.equal(button.disabled,true);
 });

@@ -13,7 +13,7 @@ function build(output = path.join(__dirname, '_site')) {
   for(const mood of ['dawn','day','sunset','midnight']){
     const image=`assets/seascape-real-${mood}-v1.jpg`;
     fs.copyFileSync(path.join(__dirname,image),path.join(output,image));
-    for(const name of [`ocean-empty-${mood}-v1.jpg`,`sunny-front-${mood}-v1.webp`,`sunny-rear-${mood}-v1.webp`]){
+    for(const name of [`ocean-empty-${mood}-v1.jpg`,`sunny-front-${mood}-v2.webp`,`sunny-rear-${mood}-v2.webp`]){
       fs.copyFileSync(path.join(__dirname,'assets',name),path.join(output,'assets',name));
     }
   }
