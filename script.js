@@ -15,6 +15,12 @@
   const progress = document.querySelector('.progress');
   let scheduled = false;
   const update = () => {
+    // Safari can restore an anchor after observer setup. Reveal content already
+    // in view on scroll/pageshow as well, so headings never remain invisible.
+    document.querySelectorAll('.reveal:not(.visible)').forEach(element => {
+      const box = element.getBoundingClientRect();
+      if (box.top < window.innerHeight && box.bottom > 0) element.classList.add('visible');
+    });
     const height = document.documentElement.scrollHeight - window.innerHeight;
     progress.style.width = `${height > 0 ? window.scrollY / height * 100 : 0}%`;
     scheduled = false;
@@ -23,6 +29,8 @@
     if (!scheduled) { scheduled = true; requestAnimationFrame(update); }
   }, { passive: true });
   window.addEventListener('resize', update);
+  window.addEventListener('pageshow', update);
+  window.addEventListener('hashchange', update);
   const map = document.querySelector('#route-map');
   const openMap = document.querySelector('.log-pose');
   openMap.addEventListener('click', () => map.showModal());

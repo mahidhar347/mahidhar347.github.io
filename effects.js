@@ -79,5 +79,30 @@
       card.style.setProperty('--tilt-x', '0deg'); card.style.setProperty('--tilt-y', '0deg');
     });
   });
+  // A lightweight motion-graphics chart: decorative signals, not live telemetry.
+  const arsenal = document.querySelector('.arsenal-grid');
+  if (arsenal) {
+    const chart = document.createElement('figure');
+    chart.className = 'network-motion';
+    chart.innerHTML = `<figcaption><span>THE GRAND LINE / SIGNAL CHART</span><small>Every connection has a course.</small></figcaption>
+      <svg viewBox="0 0 900 240" role="img" aria-label="Animated illustration connecting access, network security and application delivery">
+      <defs><pattern id="network-chart-grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="currentColor" stroke-opacity=".07"/></pattern></defs>
+      <rect width="900" height="240" fill="url(#network-chart-grid)"/>
+      <g class="network-orbits" fill="none" stroke="currentColor"><circle cx="450" cy="112" r="83"/><circle cx="450" cy="112" r="70" stroke-dasharray="2 11"/></g>
+      <g class="network-compass" fill="none"><path d="M450 18v10m0 168v10M356 112h10m168 0h10M390 52l7 7m106 106 7 7m-120 0 7-7m106-106 7-7"/><path d="M450 30l5 9h-10z" fill="currentColor"/></g>
+      <g class="network-lines" fill="none"><path d="M150 112H360Q385 112 400 97L450 47"/><path d="M450 177L500 127Q515 112 540 112H750"/><path d="M150 112Q270 205 390 152"/><path d="M510 72Q630 10 750 112"/></g>
+      <g class="network-signals" fill="none"><path d="M150 112H360Q385 112 400 97L450 47"/><path d="M450 177L500 127Q515 112 540 112H750"/><path d="M150 112Q270 205 390 152"/><path d="M510 72Q630 10 750 112"/></g>
+      <g class="network-nodes"><circle cx="150" cy="112" r="31"/><circle cx="450" cy="112" r="48"/><circle cx="750" cy="112" r="31"/></g>
+      <g class="network-node-pulses" fill="none"><circle cx="150" cy="112" r="37"/><circle cx="750" cy="112" r="37"/></g>
+      <g class="network-glyphs" fill="none"><path d="M135 104h30v20h-30zm15 20v7m-10 0h20M450 85l19 8v15q0 17-19 29-19-12-19-29V93zM441 110l6 6 13-15M735 101h30v10h-30zm0 14h30v10h-30m6-19h3m-3 14h3"/></g>
+      <g class="network-labels"><text x="150" y="181">ACCESS</text><text x="450" y="208">SECURITY</text><text x="750" y="181">DELIVERY</text></g></svg>`;
+    arsenal.before(chart);
+    if ('IntersectionObserver' in window) {
+      const visibility = new IntersectionObserver(entries => {
+        chart.classList.toggle('graphic-visible', entries[0].isIntersecting);
+      }, { threshold: .05 });
+      visibility.observe(chart);
+    } else chart.classList.add('graphic-visible');
+  }
   schedule();
 })();

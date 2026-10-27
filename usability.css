@@ -1,5 +1,8 @@
 /* Keep decorative controls away from the portfolio on narrow screens. */
-#appearance-toggle{display:none}
+#appearance-toggle{display:block;position:fixed;bottom:max(16px,env(safe-area-inset-bottom));left:50%;translate:-50% 0;min-height:44px;z-index:22;background:var(--deep);border:1px solid var(--gold);color:var(--gold);font:600 10px var(--sans);padding:10px 16px;cursor:pointer}
+.theme-dock:not(.is-open){display:none}
+.theme-dock{bottom:calc(max(16px,env(safe-area-inset-bottom)) + 56px)}
+#appearance-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .text-link,.ink-link,.github-link{display:inline-flex;align-items:center;min-height:44px}
 #weather-open{min-height:36px;min-width:150px}
 #theme-choice{min-height:36px}
