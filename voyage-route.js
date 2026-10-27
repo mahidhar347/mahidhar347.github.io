@@ -21,9 +21,9 @@
     const horizon=offsetY+400*cover;
     // Leave the phone/tablet's fixed controls below the contact point.
     const nearY=Math.min(offsetY+870*cover,width<1000?height*.82:Infinity);
-    const nearX=offsetX+1000*cover,vanishingX=offsetX+1180*cover;
+    const nearX=offsetX+1000*cover,vanishingX=offsetX+820*cover;
     // One ground-plane projection determines both contact point and apparent size.
-    // The approved rear view points up/right; its outbound path must do the same.
+    // Mirrored artwork faces up/left outbound and down/right on the return.
     const x=vanishingX+(nearX-vanishingX)*route.scale;
     const heading=Math.atan2(vanishingX-nearX,nearY-horizon)*180/Math.PI;
     return {x:clamp(x,shipWidth*.55+12,width-shipWidth*.55-12),y:horizon+(nearY-horizon)*route.scale,width:shipWidth,horizon,heading:heading+(route.returning?180:0)};

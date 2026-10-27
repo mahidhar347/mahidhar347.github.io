@@ -2,7 +2,7 @@
 .sunny-journey[hidden]{display:none}
 .sunny-position{position:absolute;left:0;top:0;width:var(--ship-width,200px);height:0;transform:translate3d(var(--ship-x,80vw),var(--ship-y,75vh),0) translateX(-50%)}
 .sunny-bob{position:absolute;bottom:0;width:100%;aspect-ratio:1230/1278;transform-origin:50% 95%;animation:sunny-swell 5.8s ease-in-out infinite}
-.sunny-face{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;user-select:none;transform:translateY(var(--waterline-offset,0px));mask-image:linear-gradient(#000 0 98%,transparent 100%)}
+.sunny-face{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;user-select:none;transform:translateY(var(--waterline-offset,0px)) scaleX(-1);mask-image:linear-gradient(#000 0 98%,transparent 100%)}
 .sunny-front{opacity:var(--front-opacity,0)}
 .sunny-rear{opacity:calc(1 - var(--front-opacity,0))}
 .sunny-wake{position:absolute;left:calc(50% + var(--wake-x,0px));top:var(--wake-y,0px);width:70%;height:calc(var(--ship-width,200px) * .26);transform-origin:50% 0;transform:translateX(-50%) rotate(var(--wake-angle,21deg));opacity:var(--wake-opacity,.35);mask-image:linear-gradient(#000,transparent)}

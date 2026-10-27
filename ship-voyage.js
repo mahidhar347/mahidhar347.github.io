@@ -68,7 +68,7 @@
       position.style.setProperty('--ship-width',layout.width.toFixed(2)+'px');position.style.setProperty('--front-opacity',viewMix.toFixed(4));
       position.style.setProperty('--wake-angle',layout.heading.toFixed(2)+'deg');position.style.setProperty('--wake-opacity',(state.speed*.48).toFixed(3));
       position.style.setProperty('--heave',(layout.width*.003).toFixed(2)+'px');
-      position.style.setProperty('--wake-x',(state.returning?layout.width*.12:0).toFixed(2)+'px');
+      position.style.setProperty('--wake-x',(state.returning?-layout.width*.12:0).toFixed(2)+'px');
       position.style.setProperty('--wake-y',(state.returning?-layout.width*.06:0).toFixed(2)+'px');
       for(const [image,view] of [[rear,'rear'],[front,'front']])image.style.setProperty('--waterline-offset',(layout.width*768/740*waterlines[view][activeMood]).toFixed(2)+'px');
       scene.dataset.phase=state.phase.toFixed(6);scene.dataset.shipWidth=layout.width.toFixed(2);scene.dataset.direction=state.returning?'returning':'outbound';
