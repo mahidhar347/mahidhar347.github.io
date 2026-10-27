@@ -46,6 +46,8 @@ test('inspection selects a fixed time and a paused demo can still return to actu
   const h=harness();await tick();const button=h.elements.find(e=>e.id==='voyage-preview');
   button.listeners.click();const inspect=h.elements.find(e=>e.id==='voyage-inspect');inspect.value='18';inspect.listeners.change();
   assert.equal(h.art.children[0].dataset.phase,'0.500000');
+  assert.equal(h.art.children[0].children[0].properties['--front-opacity'],'1.0000');
+  inspect.value='6';inspect.listeners.change();assert.equal(h.art.children[0].children[0].properties['--front-opacity'],'0.0000');
   h.root.classList.add('motion-off');h.observers[0]([{attributeName:'class'}]);
   assert.equal(button.disabled,false);button.listeners.click();assert.equal(button['aria-pressed'],'false');assert.equal(button.disabled,true);
 });

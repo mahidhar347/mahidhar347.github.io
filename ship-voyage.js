@@ -64,7 +64,8 @@
     if(force||now-lastDraw>=250){
       lastDraw=now;const time=timestamp(now),state=route.state(time),layout=route.layout(state,art.clientWidth,art.clientHeight);
       position.style.setProperty('--ship-x',layout.x.toFixed(2)+'px');position.style.setProperty('--ship-y',layout.y.toFixed(2)+'px');
-      position.style.setProperty('--ship-width',layout.width.toFixed(2)+'px');position.style.setProperty('--front-opacity',state.front.toFixed(4));
+      const viewMix=manualTime!==null&&(state.phase===0||state.phase===.5)?(state.returning?1:0):state.front;
+      position.style.setProperty('--ship-width',layout.width.toFixed(2)+'px');position.style.setProperty('--front-opacity',viewMix.toFixed(4));
       position.style.setProperty('--wake-angle',layout.heading.toFixed(2)+'deg');position.style.setProperty('--wake-opacity',(state.speed*.48).toFixed(3));
       position.style.setProperty('--heave',(layout.width*.003).toFixed(2)+'px');
       position.style.setProperty('--wake-x',(state.returning?layout.width*.12:0).toFixed(2)+'px');
