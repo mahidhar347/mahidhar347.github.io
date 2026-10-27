@@ -10,7 +10,7 @@ test('deployment versions every local script, stylesheet and icon with its exact
   build(output);
   const html=fs.readFileSync(path.join(output,'index.html'),'utf8');
   const resources=[...html.matchAll(/(?:href|src)="([^"?]+\.(?:css|js|svg|m4a))\?v=([a-f0-9]{12})"/g)];
-  assert.equal(resources.length,18);
+  assert.equal(resources.length,21);
   for(const [,file,hash] of resources){
     const actual=crypto.createHash('sha256').update(fs.readFileSync(path.join(output,file))).digest('hex').slice(0,12);
     assert.equal(hash,actual);
@@ -18,6 +18,7 @@ test('deployment versions every local script, stylesheet and icon with its exact
   assert.ok(fs.existsSync(path.join(output,'assets/grand-line-seascape.jpg')));
   for(const mood of ['dawn','day','sunset','midnight']){
     assert.ok(fs.existsSync(path.join(output,`assets/seascape-real-${mood}-v1.jpg`)));
+    for(const name of [`ocean-empty-${mood}-v1.jpg`,`sunny-front-${mood}-v1.webp`,`sunny-rear-${mood}-v1.webp`])assert.ok(fs.existsSync(path.join(output,'assets',name)));
   }
   assert.ok(!fs.existsSync(path.join(output,'weather.test.cjs')));
 });

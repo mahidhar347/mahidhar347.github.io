@@ -1,5 +1,13 @@
 # Original artwork
 
+## Layered Thousand Sunny journey
+
+The active enhanced hero uses boat-free ocean plates and separate front/rear
+Thousand Sunny fan-art cutouts, with individually rendered lighting for each mood.
+They are original AI-generated interpretations, not official anime artwork.
+Full source paths and prompts: `assets/VOYAGE-ARTWORK.md`.
+The previous full-scene backgrounds below remain available as loading/failure fallbacks.
+
 ## Current realistic backgrounds
 
 The active hero now uses four separately generated, photorealistic reinterpretations

@@ -16,6 +16,22 @@ Content is personalized from S Mahidhar’s supplied network engineering résum�
 
 ## Animation controls
 
+### Thousand Sunny daily journey
+
+The hero combines a boat-free ocean plate with separate transparent front/rear
+Thousand Sunny fan-art layers. Each mood has independently lit artwork. The ship
+follows a clock-based daily route: near the viewer at 6 AM IST, farthest out at
+6 PM, and back at 6 AM. Refreshing does not reset it. The rear view is used outward
+and the front view on return, with gentle view blends at the turns. Depth changes
+its position and size. Subtle bobbing and ripples are decorative, not fluid physics.
+
+Ocean controls → Preview a full day plays a 40-second demo. Return to actual time
+exits it; the demo also ends automatically. Pause motion freezes movement and
+disables the preview, including for reduced-motion preferences. Rendering stops
+when the hero is offscreen or the tab is hidden. Failed artwork retains the old
+complete scene without drawing a second boat. Image sources and prompts are in
+`assets/VOYAGE-ARTWORK.md`.
+
 ## Hourly ocean moods
 
 Live weather uses Open-Meteo's current modeled conditions, refreshed every 15 minutes

@@ -1,0 +1,20 @@
+.sunny-journey{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.sunny-journey[hidden]{display:none}
+.sunny-position{position:absolute;left:0;top:0;width:var(--ship-width,200px);height:0;transform:translate3d(var(--ship-x,80vw),var(--ship-y,75vh),0)}
+.sunny-bob{position:absolute;bottom:0;width:100%;aspect-ratio:1230/1278;transform-origin:50% 95%;animation:sunny-swell 5.8s ease-in-out infinite}
+.sunny-face{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;user-select:none;mask-image:linear-gradient(#000 0 91%,#000c 95%,transparent 100%)}
+.sunny-front{opacity:var(--front-opacity,0)}
+.sunny-rear{opacity:calc(1 - var(--front-opacity,0))}
+.sunny-wake{position:absolute;left:15%;bottom:-1%;width:70%;height:calc(var(--ship-width,200px) * .09);border:1px solid #d5e9e88c;border-radius:50%;background:radial-gradient(ellipse,#d7eded26,transparent 65%);box-shadow:0 0 5px #e1f3ee35;animation:sunny-ripple 4.5s ease-out infinite}
+.sunny-wake:after{content:'';position:absolute;inset:18% -8%;border:1px solid #d5e9e850;border-radius:50%}
+[data-theme="midnight"] .sunny-wake{opacity:.35}
+[data-weather="storm"] .sunny-bob,[data-weather="wind"] .sunny-bob{animation-duration:3.8s}
+.sunny-idle .sunny-bob,.sunny-idle .sunny-wake{animation-play-state:paused}
+.voyage-controls{grid-column:1/-1;border-top:1px solid #ffffff25;margin-top:9px;padding-top:7px}
+#voyage-clock-status{font-size:9px;line-height:1.6;color:#d7e4e3;margin:0 0 5px;max-width:260px}
+#voyage-preview{display:block;min-height:36px;width:100%;font:600 10px var(--sans);color:var(--gold);background:transparent;border:1px solid #ffffff35;padding:7px 10px;cursor:pointer}
+#voyage-preview:disabled{opacity:.55;cursor:default}
+#voyage-preview:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+@keyframes sunny-swell{0%,100%{transform:translateY(0) rotate(-.65deg)}50%{transform:translateY(-2.5px) rotate(.65deg)}}
+@keyframes sunny-ripple{0%{opacity:.25;transform:scale(.86)}55%{opacity:.65}100%{opacity:.12;transform:scale(1.15)}}
+@media(prefers-reduced-motion:reduce){.sunny-bob,.sunny-wake{animation:none}}
