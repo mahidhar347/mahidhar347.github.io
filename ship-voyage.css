@@ -21,4 +21,5 @@
 .voyage-inspect select{width:100%;max-width:none;font-size:10px;margin-top:4px;min-height:32px}
 @keyframes sunny-swell{0%,100%{transform:translateY(0) rotate(-.25deg)}50%{transform:translateY(calc(-1 * var(--heave,.6px))) rotate(.25deg)}}
 @keyframes sunny-wake-flow{to{stroke-dashoffset:-20}}
+@media(max-width:700px){.layered-voyage .hero-stamp{display:none}}
 @media(prefers-reduced-motion:reduce){.sunny-bob,.sunny-wake path{animation:none}}
