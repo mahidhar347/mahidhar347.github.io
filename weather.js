@@ -8,6 +8,7 @@
   let coordinates = {latitude:12.97, longitude:77.59}, locationName = 'Bengaluru';
   let timer, controller, requestId = 0, lastSuccess = 0, weather = null;
   const refreshPeriod = 15 * 60 * 1000;
+  const maxForecastAge = 45 * 60;
   const active = () => choice.value === 'weather';
   const publish = value => window.dispatchEvent(new CustomEvent('voyage-weather', {detail:value}));
   const ocean = document.querySelector('.hero');
@@ -20,6 +21,8 @@
     soundButton.textContent='Enable sound';soundButton.setAttribute('aria-pressed','false');soundStatus.textContent=message;
   }
   async function refresh(force=false) {
+    // Initial pageshow and foreground events can fire while the first request is pending.
+    if (!force && controller && !controller.signal.aborted) return;
     clearTimeout(timer);
     if (!active()) return;
     if (!force && weather && Date.now()-lastSuccess < refreshPeriod) {
@@ -35,13 +38,17 @@
       const response=await fetch('https://api.open-meteo.com/v1/forecast?'+params,{signal:currentController.signal,credentials:'omit',referrerPolicy:'no-referrer'});
       if (!response.ok) throw new Error('Weather request failed');
       const data=await response.json();const scene=window.VoyageWeather.describe(data.current);
-      if(!Number.isFinite(data.current.time)||Math.abs(Date.now()/1000-data.current.time)>7200)throw new Error('Weather data is stale');
+      const age=Date.now()/1000-data.current.time;
+      if(!Number.isFinite(data.current.time)||age>maxForecastAge||age < -300)throw new Error('Weather data is stale or in the future');
       if (id!==requestId || !active()) return;
       const units=data.current_units;
       if (units?.temperature_2m!=='°C' || units?.wind_speed_10m!=='km/h') throw new Error('Unexpected weather units');
       weather={...scene,summary:`${locationName} · ${scene.label} · ${scene.temperature}°C`};
       lastSuccess=Date.now();publish(weather);sound.setWeather(scene.kind);
-      details.textContent=`${locationName}: ${scene.label}, ${scene.temperature}°C, wind ${scene.wind} km/h. Updated ${new Intl.DateTimeFormat(undefined,{hour:'numeric',minute:'2-digit'}).format(new Date())}. Current conditions are modeled, not a live camera or sensor.`;
+      let forecastTime;
+      try {forecastTime=new Intl.DateTimeFormat('en-IN',{dateStyle:'medium',timeStyle:'short',timeZone:data.timezone||'UTC'}).format(new Date(data.current.time*1000))+' ('+(data.timezone||'UTC')+')';}
+      catch {forecastTime=new Date(data.current.time*1000).toISOString()+' (UTC)';}
+      details.textContent=`${locationName}: ${scene.label}, ${scene.temperature}°C, wind ${scene.wind} km/h. Forecast as of ${forecastTime}. Refreshes every 15 minutes. Conditions are modeled; the background is decorative artwork, not a live camera or an exact view of the sky.`;
       if(sound.enabled)soundStatus.textContent=`Sound on · ${scene.label.toLowerCase()}.`;
     } catch (error) {
       if(id!==requestId || !active())return;
@@ -50,7 +57,7 @@
       await stopSound('Sound is off while current weather is unavailable.');
     } finally {
       clearTimeout(timeout);
-      if(id===requestId && active())timer=setTimeout(refresh,refreshPeriod);
+      if(id===requestId){controller=null;if(active())timer=setTimeout(refresh,refreshPeriod);}
     }
   }
   window.addEventListener('voyage-mode',()=>{

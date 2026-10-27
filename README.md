@@ -18,6 +18,14 @@ Content is personalized from S Mahidhar’s supplied network engineering résum�
 
 ## Hourly ocean moods
 
+Live weather uses Open-Meteo's current modeled conditions, refreshed every 15 minutes
+for Bengaluru by default. Choosing approximate location is optional and session-only.
+The API's day/night indicator selects daylight versus night artwork independently
+of rain or clouds; the scene is decorative, not an exact view of the local sky.
+The weather dialog shows the forecast's own timestamp and location timezone.
+Responses older than 45 minutes or more than five minutes in the future are rejected;
+timeouts fall back to the hourly mood cycle. In-flight requests are deduplicated.
+
 Automatic mode rotates Dawn Voyage, Grand Line, Golden Sunset, and Midnight Seas at each India Standard Time hour boundary, repeating every four hours. Everyone in automatic mode sees the same mood. An open page updates without a reload and resynchronizes when brought back into focus. The Ocean Mood selector can pin a mood; that preference is saved on the visitor's device when storage is available. Select Automatic to resume rotation. Palettes, original seascape lighting, and midnight stars change together; profile content stays consistent. Reduced-motion preferences remove transitions. No hourly server job or GitHub commit is required.
 
 The page includes cursor-responsive ocean movement and compass rotation, floating light particles, subtle perspective tilt on cards, and a ship that follows scroll progress through the career section. All decorative motion can be paused with the fixed control. Reduced-motion system preferences disable these effects by default. Pointer effects run only for fine pointers.

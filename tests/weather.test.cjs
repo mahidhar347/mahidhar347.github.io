@@ -9,6 +9,14 @@ test('maps weather codes, wind and day/night without confusing snow with rain',(
   assert.equal(describe({...base,wind_speed_10m:30}).kind,'wind');
   assert.equal(describe({...base,weather_code:95,wind_speed_10m:50}).kind,'storm');
   assert.equal(describe({...base,is_day:0}).theme,'midnight');
+  for(const code of [0,1,2,3,45,48,51,61,71,80,95]){
+    assert.equal(describe({...base,weather_code:code,is_day:1}).theme,'day',`daylight for WMO ${code}`);
+    assert.equal(describe({...base,weather_code:code,is_day:0}).theme,'midnight',`night for WMO ${code}`);
+  }
+  assert.equal(describe({...base,weather_code:1}).label,'Mainly clear');
+  assert.equal(describe({...base,weather_code:2}).label,'Partly cloudy');
+  assert.equal(describe({...base,weather_code:3}).label,'Overcast');
+  assert.equal(describe({...base,weather_code:51}).label,'Drizzle');
   for(const bad of [{},null,{...base,weather_code:123},{...base,temperature_2m:null},{...base,wind_speed_10m:-1},{...base,is_day:7}])assert.throws(()=>describe(bad));
 });
 test('sound never autoplays, clamps volume and suspends when the page is hidden',async()=>{
@@ -41,6 +49,7 @@ test('weather mode, failure fallback, manual choice and hourly boundaries coexis
   assert.equal(choice.value,'weather');assert.equal(root.dataset.weather,'none');assert.equal(root.dataset.theme,'sunset');
   assert.match(status.textContent,/Checking the weather/);
   listeners['voyage-weather']({detail:{kind:'rain',theme:'midnight',summary:'Bengaluru · rain'}});assert.equal(root.dataset.weather,'rain');assert.equal(root.dataset.theme,'midnight');
+  listeners['voyage-weather-loading']();assert.match(status.textContent,/Checking the weather/);
   listeners['voyage-weather']({detail:null});assert.equal(root.dataset.weather,'none');assert.equal(root.dataset.theme,'sunset');
   assert.match(status.textContent,/unavailable/);
   listeners['voyage-weather-loading']();assert.match(status.textContent,/Checking the weather/);

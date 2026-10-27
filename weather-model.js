@@ -11,8 +11,9 @@
     else if ([45,48].includes(code)) kind = 'fog';
     else if (current.wind_speed_10m >= 30) kind = 'wind';
     else if (code >= 2) kind = 'cloud';
-    const labels = {clear:night?'Clear night':'Clear skies',cloud:'Cloudy skies',wind:'Gusting winds',rain:'Rain at sea',storm:'Thunderstorm',snow:'Snowfall',fog:'Misty horizon'};
-    return {kind, label:labels[kind], theme:night || ['rain','storm'].includes(kind)?'midnight':kind==='cloud'||kind==='fog'||kind==='snow'?'dawn':'day', temperature:Math.round(current.temperature_2m), wind:Math.round(current.wind_speed_10m), time:current.time};
+    const labels = {clear:code===1?'Mainly clear':night?'Clear night':'Clear skies',cloud:code===2?'Partly cloudy':'Overcast',wind:'Strong winds',rain:code<=57?'Drizzle':'Rain',storm:'Thunderstorm',snow:'Snowfall',fog:'Fog'};
+    // Daylight is independent of precipitation: daytime rain must not show a full moon.
+    return {kind, label:labels[kind], theme:night?'midnight':'day', temperature:Math.round(current.temperature_2m), wind:Math.round(current.wind_speed_10m), time:current.time};
   }
   const api = {describe};
   if (typeof module === 'object' && module.exports) module.exports = api;

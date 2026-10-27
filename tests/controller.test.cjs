@@ -16,7 +16,7 @@ function harness(fetchImplementation) {
   vm.runInNewContext(fs.readFileSync(require.resolve('../weather.js'),'utf8'),context);
   return {get,events,listeners,sound,document,timers};
 }
-const validResponse=()=>({current:{weather_code:61,is_day:1,temperature_2m:23,wind_speed_10m:15,time:Math.floor(Date.now()/1000)},current_units:{temperature_2m:'°C',wind_speed_10m:'km/h'}});
+const validResponse=()=>({timezone:'Asia/Kolkata',current:{weather_code:61,is_day:1,temperature_2m:23,wind_speed_10m:15,time:Math.floor(Date.now()/1000)},current_units:{temperature_2m:'°C',wind_speed_10m:'km/h'}});
 test('publishes fetched rain, avoids autoplay, and enables and mutes only through controls',async()=>{
   const h=harness(async()=>({ok:true,json:async()=>validResponse()}));await tick();
   const published=h.events.filter(e=>e.type==='voyage-weather').at(-1).detail;
@@ -45,4 +45,55 @@ test('rapid mute clicks are ignored until the first asynchronous stop finishes',
   const stopping=h.get('#sound-toggle').listeners.click();assert.equal(h.get('#sound-toggle').disabled,true);
   await h.get('#sound-toggle').listeners.click();release();await stopping;
   assert.equal(h.sound.enabled,false);assert.equal(h.get('#sound-toggle').disabled,false);
+});
+test('initial pageshow and visibility events share one pending request and cached result',async()=>{
+  let resolve,calls=0;
+  const pending=new Promise(r=>resolve=r);
+  const h=harness(()=>{calls++;return pending;});
+  h.listeners.pageshow();h.listeners.visibilitychange();
+  assert.equal(calls,1);
+  resolve({ok:true,json:async()=>validResponse()});await tick();
+  h.listeners.pageshow();h.listeners.visibilitychange();await tick();
+  assert.equal(calls,1);
+  assert.equal(h.timers.size,1);
+});
+test('report uses forecast timestamp and source timezone, not the fetch time',async()=>{
+  const data=validResponse();data.current.time-=600;
+  const h=harness(async()=>({ok:true,json:async()=>data}));await tick();
+  const text=h.get('#weather-details').textContent;
+  const expected=new Intl.DateTimeFormat('en-IN',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Kolkata'}).format(new Date(data.current.time*1000));
+  assert.ok(text.includes(expected));assert.match(text,/Asia\/Kolkata/);
+  assert.match(text,/background is decorative artwork/);
+});
+test('rejects forecasts over 45 minutes old and implausibly future-dated responses',async()=>{
+  for(const offset of [-2701,601]){
+    const data=validResponse();data.current.time+=offset;
+    const h=harness(async()=>({ok:true,json:async()=>data}));await tick();
+    assert.equal(h.events.filter(e=>e.type==='voyage-weather').at(-1).detail,null);
+    assert.match(h.get('#weather-details').textContent,/temporarily unavailable/);
+  }
+});
+test('unsupported API timezone does not discard otherwise valid current weather',async()=>{
+  const data=validResponse();data.timezone='Not/A_Timezone';
+  const h=harness(async()=>({ok:true,json:async()=>data}));await tick();
+  assert.equal(h.events.filter(e=>e.type==='voyage-weather').at(-1).detail.kind,'rain');
+  assert.match(h.get('#weather-details').textContent,/UTC/);
+});
+test('a timed out request falls back and schedules a retry',async()=>{
+  const h=harness((url,options)=>new Promise((resolve,reject)=>{
+    options.signal.addEventListener('abort',()=>reject(Error('aborted')));
+  }));
+  [...h.timers.values()].find(t=>t.delay===10000).f();await tick();
+  assert.equal(h.events.filter(e=>e.type==='voyage-weather').at(-1).detail,null);
+  assert.ok([...h.timers.values()].some(t=>t.delay===900000));
+});
+test('resetting the weather source invalidates the cache and publishes fresh conditions',async()=>{
+  let calls=0;const h=harness(async()=>{const data=validResponse();data.current.is_day=calls++===0?1:0;return{ok:true,json:async()=>data};});await tick();
+  assert.equal(h.events.filter(e=>e.type==='voyage-weather').at(-1).detail.theme,'day');
+  // Resetting the weather source must invalidate the cached response.
+  // The mocked selector forwards the change event normally supplied by themes.js.
+  h.get('#theme-choice').listeners.change=()=>h.listeners['voyage-mode']();
+  h.get('#weather-home').listeners.click();await tick();
+  assert.equal(calls,2);
+  assert.equal(h.events.filter(e=>e.type==='voyage-weather').at(-1).detail.theme,'midnight');
 });

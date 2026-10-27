@@ -33,7 +33,7 @@
     meta.content = colors[active];
     root.dataset.mode = preference;
     root.dataset.weather = preference === 'weather' && weatherState ? weatherState.kind : 'none';
-    const text = preference === 'weather' ? (weatherState?.summary || (weatherLoading ? 'Checking the weather…' : 'Weather unavailable · hourly mood for now')) : names[active] + (preference === 'auto' ? ' · changes hourly, IST' : ' · your chosen mood');
+    const text = preference === 'weather' ? (weatherLoading ? 'Checking the weather…' : weatherState?.summary || 'Weather unavailable · hourly mood for now') : names[active] + (preference === 'auto' ? ' · changes hourly, IST' : ' · your chosen mood');
     if (status.textContent !== text) status.textContent = text;
     if (preference === 'auto' || (preference === 'weather' && !weatherState)) {
       status.title = 'Next mood at ' + new Intl.DateTimeFormat('en-IN', { hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Kolkata' }).format(new Date(now + nextBoundary(now))) + ' IST';
